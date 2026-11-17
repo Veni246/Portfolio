@@ -450,26 +450,29 @@ function initContactForm() {
 }
 
 /* ==========================================================================
-   7. COPY EMAIL TO CLIPBOARD
+   7. COPY BUTTONS TO CLIPBOARD (Email & Phone)
    ========================================================================== */
 function initCopyEmail() {
-  const copyBtn = document.getElementById('copy-email');
-  if (!copyBtn) return;
+  const copyBtns = document.querySelectorAll('.copy-btn');
+  if (!copyBtns.length) return;
 
-  copyBtn.addEventListener('click', () => {
-    const textToCopy = copyBtn.getAttribute('data-copy') || 'mariotadic246@gmail.com';
+  copyBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const textToCopy = btn.getAttribute('data-copy');
+      if (!textToCopy) return;
 
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      const originalHTML = copyBtn.innerHTML;
-      copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Kopiert!';
-      copyBtn.classList.add('copied');
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Kopiert!';
+        btn.classList.add('copied');
 
-      setTimeout(() => {
-        copyBtn.innerHTML = originalHTML;
-        copyBtn.classList.remove('copied');
-      }, 2000);
-    }).catch(err => {
-      console.error('Kopieren fehlgeschlagen:', err);
+        setTimeout(() => {
+          btn.innerHTML = originalHTML;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Kopieren fehlgeschlagen:', err);
+      });
     });
   });
 }
