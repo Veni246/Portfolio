@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomes Spielzeugauto | Mario Tadic</title>
+  <meta name="description" content="Autonom fahrendes 4WD-Fahrzeug mit Arduino Uno, Sharp IR-Abstandssensoren und C++ Wandverfolgungs-FSM. Softwareentwicklung & Embedded Systems von Mario Tadic.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0f1a'/%3E%3Cpath d='M6 20h20l-3-8H9l-3 8z' stroke='%2306b6d4' stroke-width='2' fill='none' stroke-linejoin='round'/%3E%3Ccircle cx='10' cy='22' r='2.5' fill='%2310b981'/%3E%3Ccircle cx='22' cy='22' r='2.5' fill='%2310b981'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    /* Project Detail Common & Auto Specific Styles */
+    .project-header-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      z-index: 1000;
+      background: rgba(10, 15, 26, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-primary);
+      font-weight: 600;
+      font-size: 0.92rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-pill);
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid var(--border-subtle);
+      transition: all var(--transition-fast);
+    }
+    .back-link:hover {
+      background: var(--accent-primary);
+      color: #050a12;
+      transform: translateX(-3px);
+    }
+    .project-hero {
+      padding: 8rem 2rem 4rem;
+      background: radial-gradient(circle at 50% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+      text-align: center;
+    }
+    .project-hero__container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .project-hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1.25rem;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid var(--border-glow);
+      color: var(--accent-primary);
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    .project-hero__title {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      margin-bottom: 1rem;
+    }
+    .project-hero__subtitle {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+    .project-hero__meta {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .meta-box {
+      background: var(--gradient-card);
+      border: 1px solid var(--border-subtle);
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+    }
+    .meta-box i { color: var(--accent-primary); }
+
+    .project-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 2rem 6rem;
+    }
+    .content-block {
+      background: var(--gradient-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      margin-bottom: 3.5rem;
+    }
+    .content-block h2 {
+      font-size: 1.85rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .content-block h2 i {
+      color: var(--accent-primary);
+      font-size: 1.5rem;
+    }
+    .lead-text {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+    }
+
+    /* GitHub Highlight Banner */
+    .github-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: 1.75rem 2rem;
+      background: rgba(10, 15, 26, 0.85);
+      border: 1px solid var(--border-glow);
+      border-radius: var(--radius-md);
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    .github-banner__info {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .github-banner__info i {
+      font-size: 2.5rem;
+      color: var(--text-primary);
+    }
+    .github-banner__text strong {
+      display: block;
+      font-size: 1.15rem;
+      margin-bottom: 0.25rem;
+    }
+    .github-banner__text span {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-primary);
+    }
+
+    /* Pinout Wiring Code Block */
+    .code-terminal {
+      background: #060a12;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin: 1.5rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+    }
+    .code-terminal__bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+    .code-terminal__body {
+      padding: 1.25rem;
+      overflow-x: auto;
+      color: #93c5fd;
+      line-height: 1.6;
+    }
+    .code-terminal__body .comment { color: var(--text-tertiary); }
+    .code-terminal__body .keyword { color: #f472b6; }
+    .code-terminal__body .val { color: #34d399; }
+
+    /* FSM Architecture Box */
+    .fsm-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .fsm-card {
+      background: rgba(10, 15, 26, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      position: relative;
+    }
+    .fsm-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .fsm-card--stopp::before { background: var(--accent-danger); }
+    .fsm-card--forward::before { background: var(--accent-secondary); }
+    .fsm-card--backward::before { background: var(--accent-warm); }
+
+    .fsm-card h3 {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      margin-bottom: 0.65rem;
+    }
+    .fsm-card p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Math Formula Highlight Box */
+    .formula-box {
+      background: rgba(6, 182, 212, 0.06);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--accent-primary);
+    }
+    .formula-box small {
+      display: block;
+      color: var(--text-secondary);
+      font-family: var(--font-main);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    /* 2D Vehicle Simulation Canvas */
+    .sim-container {
+      background: #080d17;
+      border: 1px solid var(--border-glow);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin: 2.5rem 0;
+    }
+    .sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .sim-header span {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    #carCanvas {
+      width: 100%;
+      height: 280px;
+      background: #05080f;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: var(--radius-md);
+      display: block;
+    }
+    .sim-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-tertiary);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    /* Hardware Table */
+    .hw-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 0.92rem;
+    }
+    .hw-table th, .hw-table td {
+      padding: 1rem 1.25rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .hw-table th {
+      background: rgba(255, 255, 255, 0.02);
+      font-family: var(--font-mono);
+      color: var(--accent-primary);
+      font-weight: 600;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .hw-table td {
+      color: var(--text-secondary);
+    }
+    .hw-table tr:hover td {
+      background: rgba(6, 182, 212, 0.03);
+    }
+    .hw-table td strong {
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+      .content-block { padding: 2rem 1.5rem; }
+      .github-banner { flex-direction: column; align-items: flex-start; }
+      .project-header-bar { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="project-header-bar">
+    <a href="../index.html" class="nav__logo">
+      <span class="nav__logo-bracket">&lt;</span><span class="nav__logo-name">MT</span><span class="nav__logo-slash">/</span><span class="nav__logo-bracket">&gt;</span>
+      <span class="nav__logo-text">ELECTRONICS</span>
+    </a>
+    <a href="../index.html#projekte" class="back-link"><i class="fa-solid fa-arrow-left"></i> Zurück zu Projekten</a>
+  </header>
+
+  <!-- Project Hero -->
+  <section class="project-hero">
+    <div class="project-hero__container">
+      <div class="project-hero__badge"><i class="fa-solid fa-robot"></i> Embedded Systems &bull; Robotik &bull; C++</div>
+      <h1 class="project-hero__title">Autonomes Spielzeugauto</h1>
+      <p class="project-hero__subtitle">
+        Softwaregesteuertes 4WD-Modellfahrzeug mit Sharp Infrarot-Sensorik, nicht-blockierender Echtzeit-Zustandsmaschine und autonomer Wandverfolgung.
+      </p>
+      <div class="project-hero__meta">
+        <div class="meta-box"><i class="fa-brands fa-github"></i> Veni246 / Auto</div>
+        <div class="meta-box"><i class="fa-solid fa-microchip"></i> Arduino Uno (ATmega328P)</div>
+        <div class="meta-box"><i class="fa-solid fa-code"></i> C++ / PlatformIO</div>
+        <div class="meta-box"><i class="fa-solid fa-gauge"></i> 4x DC Differential 4WD</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Body Content -->
+  <main class="project-body">
+    <!-- 1. GitHub Direct Link Banner -->
+    <div class="github-banner">
+      <div class="github-banner__info">
+        <i class="fa-brands fa-github"></i>
+        <div class="github-banner__text">
+          <strong>Open Source GitHub Repository</strong>
+          <span>https://github.com/Veni246/Auto</span>
+        </div>
+      </div>
+      <a href="https://github.com/Veni246/Auto" target="_blank" rel="noopener" class="btn btn--primary">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Quellcode auf GitHub ansehen
+      </a>
+    </div>
+
+    <!-- 2. Project Motivation & Abstract -->
+    <div class="content-block">
+      <h2><i class="fa-solid fa-bullseye"></i> Projektziel &amp; Motivation</h2>
+      <p class="lead-text">
+        Das Ziel des Projekts war die Konzeption und Realisierung eines vollständig softwaregesteuerten, vierradgetriebenen (4WD) Modellfahrzeugs. Das Fahrzeug navigiert selbstständig durch Korridore, reagiert dynamisch auf Hindernisse und hält durch kontinuierliche Sensor-Messungen einen definierten Abstand zur linken Begrenzungswand (Wall-Following-Prinzip).
+      </p>
+      <p>
+        Das Projekt entstand im schulischen Rahmen der HTL Wien 10 (Klasse 6AAELI) und verdeutlicht praxisnah das Zusammenspiel von <strong>Mikrocontroller-Programmierung</strong>, <strong>nicht-blockierender Multitasking-Architektur</strong>, <strong>analoger Sensorsignal-Aufbereitung</strong> und <strong>präziser Motor-PWM-Ansteuerung</strong>.
+      </p>
+    </div>
+
+    <!-- 3. Interactive 2D Simulation -->
+    <div class="content-block">
+      <h2><i class="fa-solid fa-gamepad"></i> Interaktive Simulation: Wandverfolgung &amp; Hinderniserkennung</h2>
+      <p>Visuelle Demonstration des Navigations-Algorithmus mit den 3 optischen Sharp IR-Sensorstrahlen (Front, Links, Rechts):</p>
+
+      <div class="sim-container">
+        <div class="sim-header">
+          <span><i class="fa-solid fa-compass"></i> AUTONOMER FAHRKORRIDOR // ECHTZEIT-STEUERUNG</span>
+          <button id="resetCarBtn" class="btn btn--ghost" style="padding: 0.4rem 1rem; font-size: 0.8rem;">
+            <i class="fa-solid fa-rotate-left"></i> Fahrzeug zurücksetzen
+          </button>
+        </div>
+
+        <canvas id="carCanvas" width="900" height="280"></canvas>
+
+        <div class="sim-footer">
+          <div><i class="fa-solid fa-circle" style="color:#06b6d4;font-size:8px;"></i> IR-Front: <span id="simFrontDist">85 cm</span></div>
+          <div><i class="fa-solid fa-circle" style="color:#10b981;font-size:8px;"></i> IR-Links: <span id="simLeftDist">35 cm</span></div>
+          <div><i class="fa-solid fa-circle" style="color:#f59e0b;font-size:8px;"></i> IR-Rechts: <span id="simRightDist">95 cm</span></div>
+          <div>FSM-Status: <strong id="simFsmState" style="color:var(--accent-secondary);">FORWARD</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Software Architecture & Control Logic -->
+    <div class="content-block">
+      <h2><i class="fa-solid fa-diagram-project"></i> Softwarearchitektur &amp; Steuerungslogik</h2>
+      <p>
+        Der Quellcode in <code>src/main.cpp</code> verzichtet bewusst auf blockierende <code>delay()</code>-Aufrufe und setzt stattdessen auf einen deterministischen, zeitgesteuerten <strong>kooperativen Scheduler mit <code>millis()</code></strong>:
+      </p>
+
+      <ul style="list-style: none; margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.75rem;">
+        <li style="display:flex; gap: 0.75rem; align-items: flex-start;">
+          <i class="fa-solid fa-clock" style="color:var(--accent-primary); margin-top:0.35rem;"></i>
+          <span><strong>25 Hz Kontrollschleife (40 ms Zyklus):</strong> Abtastung aller drei ADC-Kanäle, Ausführung der Sensor-Glättungsfilter und Aktualisierung der Fahrentscheidungen in der State Machine.</span>
+        </li>
+        <li style="display:flex; gap: 0.75rem; align-items: flex-start;">
+          <i class="fa-solid fa-tower-broadcast" style="color:var(--accent-secondary); margin-top:0.35rem;"></i>
+          <span><strong>10 Hz Telemetrieschleife (100 ms Zyklus):</strong> Ausgabe formatierter Echtzeit-Messwerte (F, L, R Entfernungen in cm, Motor-PWM-Werte) über die serielle Hardware-Schnittstelle (115200 Baud).</span>
+        </li>
+        <li style="display:flex; gap: 0.75rem; align-items: flex-start;">
+          <i class="fa-solid fa-hand-pointer" style="color:var(--accent-warm); margin-top:0.35rem;"></i>
+          <span><strong>Asynchrones Taster-Polling:</strong> Permanente, prellfreie Abfrage der START- und STOP-Taster mit interner Pullup-Beschaltung.</span>
+        </li>
+      </ul>
+
+      <h3 style="margin: 2rem 0 1rem;">Finite State Machine (FSM)</h3>
+      <div class="fsm-grid">
+        <div class="fsm-card fsm-card--stopp">
+          <h3>1. STOPP (Standby)</h3>
+          <p>Startzustand nach Bootup oder bei Betätigung des STOP-Tasters. Motor-PWM auf 0 gesetzt. Das Fahrzeug wartet sicher auf den START-Befehl.</p>
+        </div>
+        <div class="fsm-card fsm-card--forward">
+          <h3>2. FORWARD (Fahrt)</h3>
+          <p>Autonome Vorwärtsfahrt mit Wandverfolgung. Fällt der Frontabstand unter <strong>30 cm</strong>, wechselt das System sofort in den Rückwärtsgang.</p>
+        </div>
+        <div class="fsm-card fsm-card--backward">
+          <h3>3. BACKWARD (Freifahren)</h3>
+          <p>Gezieltes Rückwärts-Freifahren bei Blockaden. Die Hysterese schaltet erst bei einem Freiraum von <strong>&ge; 50 cm</strong> wieder auf Vorwärtsfahrt um (verhindert Schwingen).</p>
+        </div>
+      </div>
+
+      <h3 style="margin: 2rem 0 1rem;">Wandverfolgungs- &amp; Differenzial-Lenkungsalgorithmus</h3>
+      <p>
+        Die Lenkung erfolgt über <strong>Skid-Steering (Differenzialantrieb)</strong>: Durch unterschiedliche PWM-Werte für die linke und rechte Motorgruppe kurvt das Fahrzeug geschmeidig.
+      </p>
+      <div class="code-terminal">
+        <div class="code-terminal__bar">
+          <span>src/main.cpp — Wandfolge- und Ausweichlogik</span>
+          <span>C++</span>
+        </div>
+        <div class="code-terminal__body">
+<span class="comment">// Soll-Abstand zur linken Wand: 35 cm</span>
+<span class="keyword">const</span> <span class="val">float</span> TARGET_DIST = <span class="val">35.0</span>;
+<span class="keyword">const</span> <span class="val">int</span> BASE_SPEED = <span class="val">180</span>; <span class="comment">// ~70% PWM Duty-Cycle</span>
+
+<span class="comment">// 1. Vorausschauende Kurvenerkennung (Wand vor dem Fahrzeug):</span>
+<span class="keyword">if</span> (ir_front &lt; <span class="val">70.0</span>) {
+    <span class="keyword">if</span> (ir_right &gt; ir_left + <span class="val">10.0</span>) {
+        spd_right = spd_right * <span class="val">0.3</span>; <span class="comment">// Scharfe Rechtskurve in den Freiraum</span>
+    } <span class="keyword">else if</span> (ir_left &gt; ir_right + <span class="val">10.0</span>) {
+        spd_left = spd_left * <span class="val">0.3</span>;   <span class="comment">// Scharfe Linkskurve in den Freiraum</span>
+    }
+}
+<span class="comment">// 2. Feine Wandabstands-Korrektur (Left-Wall-Following):</span>
+<span class="keyword">else if</span> (ir_left &lt; <span class="val">34.0</span>) {
+    spd_right = spd_right * <span class="val">0.3</span>;     <span class="comment">// Zu nah an linker Wand -> nach rechts steuern</span>
+} <span class="keyword">else if</span> (ir_left &gt; <span class="val">36.0</span>) {
+    spd_left = spd_left * <span class="val">0.7</span>;       <span class="comment">// Zu weit weg -> sanft nach links korrigieren</span>
+}
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Sensor Calibration & Signal Conditioning -->
+    <div class="content-block">
+      <h2><i class="fa-solid fa-calculator"></i> Sensorkalibrierung &amp; Signalaufbereitung</h2>
+      <p>
+        Optische Sharp-Infrarotsensoren liefern eine stark nichtlineare Kennlinie, bei der die Ausgangsspannung asymptotisch mit zunehmender Distanz abfällt. Zur exakten physikalischen Entfernungsbestimmung wurden die Sensoren empirisch kalibriert und über ein inverses Regressionsmodell in C++ linearisiert:
+      </p>
+
+      <div class="formula-box">
+        Distance [cm] = (M / (ADC_raw + D)) - K
+        <small>Empirisch in Excel ermittelte Kalibrierungskonstanten für minimale Restfehler über den gesamten Messbereich.</small>
+      </div>
+
+      <p>
+        Zur Unterdrückung von analogem Rauschen und streifenden Reflexionen durchlaufen alle Messwerte einen <strong>gleitenden 2-Punkte-Tiefpassfilter</strong> vor der Auswertung in der State Machine:
+      </p>
+      <div class="formula-box" style="background: rgba(16, 185, 129, 0.06); border-color: var(--border-emerald); color: var(--accent-secondary);">
+        Distance_filtered = (Distance_neu + Distance_vorherig) / 2.0
+        <small>Effektive Glättung von Messspitzen bei minimaler Phasenverzögerung (Latenz &lt; 40 ms).</small>
+      </div>
+    </div>
+
+    <!-- 6. Hardware Specifications & Pin Mapping -->
+    <div class="content-block">
+      <h2><i class="fa-solid fa-microchip"></i> Hardware-Komponenten &amp; Pin-Mapping</h2>
+      <p>Vollständige Aufschlüsselung der verwendeten Baugruppen und der elektrischen Verdrahtung am ATmega328P:</p>
+
+      <table class="hw-table">
+        <thead>
+          <tr>
+            <th>Komponente</th>
+            <th>Modell / Spezifikation</th>
+            <th>Pin-Zuordnung</th>
+            <th>Funktion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Mikrocontroller</strong></td>
+            <td>Arduino Uno (ATmega328P, 16 MHz)</td>
+            <td>—</td>
+            <td>Zentrale Ablaufsteuerung, ADC &amp; PWM</td>
+          </tr>
+          <tr>
+            <td><strong>Front-Distanzsensor</strong></td>
+            <td>Sharp GP2Y0A02YK0F (Optisch IR)</td>
+            <td>Analog A0</td>
+            <td>Hindernis- &amp; Freiraumdetektion (20–150 cm)</td>
+          </tr>
+          <tr>
+            <td><strong>Linker Distanzsensor</strong></td>
+            <td>Sharp GP2Y0A21YK0F (Optisch IR)</td>
+            <td>Analog A1</td>
+            <td>Wandabstandsmessung (10–80 cm)</td>
+          </tr>
+          <tr>
+            <td><strong>Rechter Distanzsensor</strong></td>
+            <td>Sharp GP2Y0A21YK0F (Optisch IR)</td>
+            <td>Analog A2</td>
+            <td>Flankenschutz &amp; Kurvenentscheidung (10–80 cm)</td>
+          </tr>
+          <tr>
+            <td><strong>Motortreiber</strong></td>
+            <td>Dual H-Brücke (z. B. L298N / L293D)</td>
+            <td>Pins 4, 7, 8, 9(PWM), 10(PWM), 12</td>
+            <td>4-Kanal DC-Motorsteuerung mit Drehrichtungswechsel</td>
+          </tr>
+          <tr>
+            <td><strong>Antrieb</strong></td>
+            <td>4x DC Getriebemotoren</td>
+            <td>An H-Brückenausgänge</td>
+            <td>4WD Differenzialantrieb</td>
+          </tr>
+          <tr>
+            <td><strong>Bedienelemente</strong></td>
+            <td>2x Taster (Active LOW)</td>
+            <td>Pin 2 (STOP), Pin 3 (START)</td>
+            <td>Manuelle Betriebsfreigabe &amp; Not-Aus</td>
+          </tr>
+          <tr>
+            <td><strong>Telemetrie</strong></td>
+            <td>Hardware UART</td>
+            <td>Pins 0/1 (RX/TX) @ 115200 Baud</td>
+            <td>Diagnose, Kalibrierung &amp; Live-Messwertausgabe</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Navigation CTA -->
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="../index.html#projekte" class="btn btn--primary" style="padding: 1rem 2.5rem; font-size: 1.05rem;">
+        <i class="fa-solid fa-arrow-left"></i> Zurück zur Portfolio-Übersicht
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__bottom" style="margin-top: 0; padding-top: 0; border: none; justify-content: center; text-align: center;">
+      <span>Autonomes Spielzeugauto • &copy; 2026 Mario Tadic • HTL Wien 10 (6AAELI)</span>
+    </div>
+  </footer>
+
+  <!-- Interactive 2D Corridor Driving Simulation Script -->
+  <script>
+    (function initCarSimulation() {
+      const canvas = document.getElementById('carCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const simFrontDist = document.getElementById('simFrontDist');
+      const simLeftDist = document.getElementById('simLeftDist');
+      const simRightDist = document.getElementById('simRightDist');
+      const simFsmState = document.getElementById('simFsmState');
+      const resetBtn = document.getElementById('resetCarBtn');
+
+      let width = canvas.width = canvas.offsetWidth;
+      let height = canvas.height = canvas.offsetHeight;
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = canvas.offsetWidth;
+        height = canvas.height = canvas.offsetHeight;
+      });
+
+      // Simulation State
+      const car = {
+        x: 80,
+        y: height / 2 + 10,
+        angle: 0,
+        speed: 1.6,
+        length: 36,
+        width: 22,
+        state: 'FORWARD'
+      };
+
+      // Corridors & Obstacles
+      const walls = [
+        { x: 0, y: 30, w: width, h: 10 },
+        { x: 0, y: height - 40, w: width, h: 10 },
+        { x: width * 0.45, y: 30, w: 20, h: 120 }, // Obstacle upper
+        { x: width * 0.8, y: height - 160, w: 20, h: 120 } // Obstacle lower
+      ];
+
+      function resetCar() {
+        car.x = 80;
+        car.y = height / 2 + 15;
+        car.angle = 0;
+        car.state = 'FORWARD';
+      }
+
+      if (resetBtn) resetBtn.addEventListener('click', resetCar);
+
+      function castRay(angleOffset, maxRange) {
+        const rayAngle = car.angle + angleOffset;
+        const cos = Math.cos(rayAngle);
+        const sin = Math.sin(rayAngle);
+
+        for (let dist = 5; dist < maxRange; dist += 3) {
+          const checkX = car.x + cos * dist;
+          const checkY = car.y + sin * dist;
+
+          // Check boundary walls
+          if (checkY <= 40 || checkY >= height - 40 || checkX >= width - 20 || checkX <= 10) {
+            return { dist: dist, x: checkX, y: checkY };
+          }
+
+          // Check obstacles
+          for (let w of walls.slice(2)) {
+            if (checkX >= w.x && checkX <= w.x + w.w && checkY >= w.y && checkY <= w.y + w.h) {
+              return { dist: dist, x: checkX, y: checkY };
+            }
+          }
+        }
+        return { dist: maxRange, x: car.x + cos * maxRange, y: car.y + sin * maxRange };
+      }
+
+      function update() {
+        // Read simulated sensors
+        const frontRay = castRay(0, 160);
+        const leftRay = castRay(-Math.PI / 4, 100);
+        const rightRay = castRay(Math.PI / 4, 100);
+
+        const fDist = Math.round(frontRay.dist * 0.9);
+        const lDist = Math.round(leftRay.dist * 0.9);
+        const rDist = Math.round(rightRay.dist * 0.9);
+
+        simFrontDist.textContent = `${fDist} cm`;
+        simLeftDist.textContent = `${lDist} cm`;
+        simRightDist.textContent = `${rDist} cm`;
+
+        // Exact FSM logic reproduction:
+        if (fDist < 30) {
+          car.state = 'BACKWARD';
+        } else if (car.state === 'BACKWARD' && fDist >= 50) {
+          car.state = 'FORWARD';
+        }
+
+        simFsmState.textContent = car.state;
+        simFsmState.style.color = car.state === 'FORWARD' ? 'var(--accent-secondary)' : 'var(--accent-danger)';
+
+        if (car.state === 'FORWARD') {
+          // Preemptive avoidance or wall following
+          let steer = 0;
+          if (fDist < 70) {
+            if (rDist > lDist + 10) steer = 0.05; // Right turn
+            else if (lDist > rDist + 10) steer = -0.05; // Left turn
+            else steer = 0.04;
+          } else {
+            // Left wall following
+            if (lDist < 34) steer = 0.025; // Steer right
+            else if (lDist > 36) steer = -0.02; // Steer left
+          }
+
+          car.angle += steer;
+          car.x += Math.cos(car.angle) * car.speed;
+          car.y += Math.sin(car.angle) * car.speed;
+        } else {
+          // Backward maneuver
+          car.x -= Math.cos(car.angle) * 1.2;
+          car.y -= Math.sin(car.angle) * 1.2;
+          car.angle += 0.03;
+        }
+
+        // Loop corridor around
+        if (car.x > width - 30) car.x = 40;
+        if (car.x < 20) car.x = width - 40;
+
+        return { frontRay, leftRay, rightRay };
+      }
+
+      function render(rays) {
+        ctx.fillStyle = '#05080f';
+        ctx.fillRect(0, 0, width, height);
+
+        // Draw track walls
+        ctx.fillStyle = '#111927';
+        for (let w of walls) {
+          ctx.fillRect(w.x, w.y, w.w, w.h);
+          ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
+          ctx.strokeRect(w.x, w.y, w.w, w.h);
+        }
+
+        // Draw laser sensor beams
+        function drawRay(ray, color) {
+          ctx.beginPath();
+          ctx.moveTo(car.x, car.y);
+          ctx.lineTo(ray.x, ray.y);
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1.2;
+          ctx.setLineDash([4, 4]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          ctx.beginPath();
+          ctx.arc(ray.x, ray.y, 3, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
+        }
+
+        drawRay(rays.frontRay, '#06b6d4'); // Front cyan
+        drawRay(rays.leftRay, '#10b981');  // Left emerald
+        drawRay(rays.rightRay, '#f59e0b'); // Right amber
+
+        // Draw Car Body
+        ctx.save();
+        ctx.translate(car.x, car.y);
+        ctx.rotate(car.angle);
+
+        // Chassis
+        ctx.fillStyle = '#1e293b';
+        ctx.strokeStyle = '#06b6d4';
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(-car.length / 2, -car.width / 2, car.length, car.width);
+        ctx.strokeRect(-car.length / 2, -car.width / 2, car.length, car.width);
+
+        // 4 Wheels
+        ctx.fillStyle = '#475569';
+        ctx.fillRect(-car.length / 2 + 3, -car.width / 2 - 4, 10, 4);
+        ctx.fillRect(car.length / 2 - 13, -car.width / 2 - 4, 10, 4);
+        ctx.fillRect(-car.length / 2 + 3, car.width / 2, 10, 4);
+        ctx.fillRect(car.length / 2 - 13, car.width / 2, 10, 4);
+
+        // Headlight direction indicator
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(car.length / 2 - 4, -4, 4, 8);
+
+        ctx.restore();
+      }
+
+      function loop() {
+        const rays = update();
+        render(rays);
+        requestAnimationFrame(loop);
+      }
+
+      loop();
+    })();
+  </script>
+</body>
+</html>

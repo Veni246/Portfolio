@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mario Tadic | Elektronik & Software Engineering</title>
+  <meta name="description" content="Portfolio von Mario Tadic – Elektronikentwicklung, PCB-Design, Embedded Systems und Softwareentwicklung. Student der Angewandten Elektronik und Technischen Informatik an der FH Campus Wien.">
+  <meta property="og:title" content="Mario Tadic | Elektronik & Software Engineering">
+  <meta property="og:description" content="Elektronikentwicklung, PCB-Design, Embedded Systems und Softwareentwicklung.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0f1a'/%3E%3Cpath d='M8 16h4l2-4 2 8 2-6 2 4h4' stroke='%2306b6d4' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='7' cy='16' r='2' fill='%2310b981'/%3E%3Ccircle cx='25' cy='18' r='2' fill='%2310b981'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ===== HEADER / NAVIGATION ===== -->
+  <header class="header" id="header">
+    <nav class="nav">
+      <a href="#home" class="nav__logo">
+        <span class="nav__logo-bracket">&lt;</span>
+        <span class="nav__logo-name">MT</span>
+        <span class="nav__logo-slash">/</span>
+        <span class="nav__logo-bracket">&gt;</span>
+        <span class="nav__logo-text">ELECTRONICS</span>
+      </a>
+      <div class="nav__links" id="nav-links">
+        <a href="#home" class="nav__link active">Home</a>
+        <a href="#ueber-mich" class="nav__link">Über mich</a>
+        <a href="#ausbildung" class="nav__link">Ausbildung</a>
+        <a href="#erfahrung" class="nav__link">Erfahrung</a>
+        <a href="#skills" class="nav__link">Skills</a>
+        <a href="#projekte" class="nav__link">Projekte</a>
+        <a href="#kontakt" class="nav__link">Kontakt</a>
+      </div>
+      <div class="nav__actions">
+        <span class="nav__status"><i class="fa-solid fa-circle" style="font-size:6px;color:#10b981;vertical-align:middle"></i> Wien • Student</span>
+        <a href="#kontakt" class="nav__cta">Kontakt <i class="fa-solid fa-arrow-right"></i></a>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Mobile Nav Overlay -->
+  <div class="mobile-nav" id="mobile-nav">
+    <div class="mobile-nav__header">
+      <a href="#home" class="nav__logo">
+        <span class="nav__logo-bracket">&lt;</span><span class="nav__logo-name">MT</span><span class="nav__logo-slash">/</span><span class="nav__logo-bracket">&gt;</span>
+        <span class="nav__logo-text">ELECTRONICS</span>
+      </a>
+      <button class="mobile-nav__close" id="mobile-nav-close" aria-label="Menü schließen"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mobile-nav__links">
+      <a href="#home" class="mobile-nav__link">Home</a>
+      <a href="#ueber-mich" class="mobile-nav__link">Über mich</a>
+      <a href="#ausbildung" class="mobile-nav__link">Ausbildung</a>
+      <a href="#erfahrung" class="mobile-nav__link">Erfahrung</a>
+      <a href="#skills" class="mobile-nav__link">Skills</a>
+      <a href="#projekte" class="mobile-nav__link">Projekte</a>
+      <a href="#kontakt" class="mobile-nav__link">Kontakt</a>
+    </div>
+    <div class="mobile-nav__contact">
+      <a href="mailto:mariotadic246@gmail.com" class="btn btn--primary"><i class="fa-solid fa-envelope"></i> E-Mail senden</a>
+    </div>
+  </div>
+
+  <main>
+    <!-- ===== HERO SECTION ===== -->
+    <section id="home" class="hero">
+      <canvas id="circuit-canvas"></canvas>
+      <div class="hero__content">
+        <div class="hero__badge">
+          <span class="pulse-dot"></span>
+          Angewandte Elektronik &amp; Technische Informatik
+        </div>
+        <h1 class="hero__title">
+          Hardware. <span class="gradient-text">Software.</span> Systeme.
+        </h1>
+        <p class="hero__tagline">
+          Ich entwickle elektronische Systeme von der Schaltung über die Leiterplatte bis zur fertigen Software – und bringe Hardware und Code zu funktionierenden Gesamtlösungen zusammen.
+        </p>
+        <div class="hero__ctas">
+          <a href="#projekte" class="btn btn--primary"><i class="fa-solid fa-microchip"></i> Meine Projekte</a>
+          <a href="#kontakt" class="btn btn--ghost"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+        </div>
+        <div class="hero__metrics">
+          <span class="metric"><i class="fa-solid fa-graduation-cap"></i> FH Campus Wien</span>
+          <span class="metric"><i class="fa-solid fa-microchip"></i> Embedded Systems</span>
+          <span class="metric"><i class="fa-solid fa-location-dot"></i> Wien, Österreich</span>
+        </div>
+      </div>
+      <div class="hero__terminal">
+        <div class="terminal__header">
+          <span class="terminal__dot terminal__dot--red"></span>
+          <span class="terminal__dot terminal__dot--yellow"></span>
+          <span class="terminal__dot terminal__dot--green"></span>
+          <span class="terminal__title">system_status.sh</span>
+        </div>
+        <div class="terminal__body" id="terminal-body"></div>
+      </div>
+    </section>
+
+    <!-- ===== ÜBER MICH ===== -->
+    <section id="ueber-mich" class="section">
+      <div class="section__header reveal">
+        <span class="section__label">ÜBER MICH</span>
+        <h2 class="section__title">Wer ich bin</h2>
+      </div>
+      <div class="about__content reveal">
+        <p>Ich bin Mario Tadic und interessiere mich besonders für die Verbindung von Hardware und Software. Mein Schwerpunkt liegt in der Entwicklung elektronischer Systeme, der Mikrocontrollerprogrammierung und der praktischen Umsetzung technischer Projekte.</p>
+        <p>Durch meine Ausbildung an der HTL Wien 10 sowie meine bisherigen Projekte konnte ich praktische Erfahrungen in der Elektronikentwicklung, im PCB-Design und in der Softwareentwicklung sammeln.</p>
+        <p>Besonders begeistert mich die Entwicklung eigener technischer Lösungen – von der ersten Idee über die elektronische Schaltung und Leiterplatte bis hin zur fertigen Software und einem funktionierenden Gesamtsystem.</p>
+        <p>Aktuell studiere ich Angewandte Elektronik und Technische Informatik an der FH Campus Wien und möchte meine technischen Kenntnisse kontinuierlich erweitern.</p>
+      </div>
+      <div class="about__grid">
+        <div class="about__card reveal">
+          <div class="about__card-icon"><i class="fa-solid fa-microchip"></i></div>
+          <h3>Elektronikentwicklung</h3>
+          <p>Dimensionierung und Entwicklung elektronischer Schaltungen, Sensorintegration und Spannungsversorgungen.</p>
+        </div>
+        <div class="about__card reveal">
+          <div class="about__card-icon"><i class="fa-solid fa-layer-group"></i></div>
+          <h3>PCB-Design</h3>
+          <p>Schaltplanerstellung, Leiterplattenlayout, Bauteilplatzierung und Leiterbahnrouting mit KiCad.</p>
+        </div>
+        <div class="about__card reveal">
+          <div class="about__card-icon"><i class="fa-solid fa-memory"></i></div>
+          <h3>Embedded Systems</h3>
+          <p>Programmierung von Mikrocontrollern wie Arduino und ESP32, Sensoranbindung und Datenerfassung.</p>
+        </div>
+        <div class="about__card reveal">
+          <div class="about__card-icon"><i class="fa-solid fa-code"></i></div>
+          <h3>Softwareentwicklung</h3>
+          <p>Embedded Software, Hardware-Software-Integration, Webserver auf Mikrocontrollern und browserbasierte UIs.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== AUSBILDUNG ===== -->
+    <section id="ausbildung" class="section">
+      <div class="section__header reveal">
+        <span class="section__label">AUSBILDUNG</span>
+        <h2 class="section__title">Mein Bildungsweg</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline__item timeline__item--featured reveal">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content">
+            <span class="timeline__date">2026 – laufend</span>
+            <h3 class="timeline__title">Bachelorstudium Angewandte Elektronik und Technische Informatik</h3>
+            <p class="timeline__institution"><i class="fa-solid fa-building-columns"></i> FH Campus Wien</p>
+            <span class="timeline__badge">Aktuell</span>
+          </div>
+        </div>
+        <div class="timeline__item timeline__item--featured reveal">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content">
+            <span class="timeline__date">2024 – 2026</span>
+            <h3 class="timeline__title">Aufbaulehrgang Elektronik mit Matura</h3>
+            <p class="timeline__institution"><i class="fa-solid fa-building-columns"></i> HTL Wien 10</p>
+          </div>
+        </div>
+        <div class="timeline__item timeline__item--featured reveal">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content">
+            <span class="timeline__date">2019 – 2024</span>
+            <h3 class="timeline__title">Fachschule Elektronik</h3>
+            <p class="timeline__institution"><i class="fa-solid fa-building-columns"></i> HTL Wien 10</p>
+          </div>
+        </div>
+        <div class="timeline__item reveal">
+          <div class="timeline__marker timeline__marker--small"></div>
+          <div class="timeline__content">
+            <span class="timeline__date">2018 – 2019</span>
+            <p class="timeline__institution">PTS 10 Pernerstorfergasse</p>
+          </div>
+        </div>
+        <div class="timeline__item reveal">
+          <div class="timeline__marker timeline__marker--small"></div>
+          <div class="timeline__content">
+            <span class="timeline__date">2014 – 2018</span>
+            <p class="timeline__institution">NMS Campus Sonwendviertel</p>
+          </div>
+        </div>
+        <div class="timeline__item reveal">
+          <div class="timeline__marker timeline__marker--small"></div>
+          <div class="timeline__content">
+            <span class="timeline__date">2010 – 2014</span>
+            <p class="timeline__institution">Volksschule Campus Monte Laa</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BERUFSERFAHRUNG ===== -->
+    <section id="erfahrung" class="section">
+      <div class="section__header reveal">
+        <span class="section__label">ERFAHRUNG</span>
+        <h2 class="section__title">Berufserfahrung</h2>
+      </div>
+      <div class="experience__grid">
+        <div class="experience__card reveal">
+          <span class="experience__date"><i class="fa-regular fa-calendar"></i> 06/2023 – 07/2023</span>
+          <h3 class="experience__company">WIPA</h3>
+          <p class="experience__role">Samstagskraft</p>
+        </div>
+        <div class="experience__card reveal">
+          <span class="experience__date"><i class="fa-regular fa-calendar"></i> 07/2022 – 07/2022</span>
+          <h3 class="experience__company">ÖBB-Technische Services GmbH</h3>
+          <p class="experience__role">Ferialpraktikant</p>
+        </div>
+        <div class="experience__card reveal">
+          <span class="experience__date"><i class="fa-regular fa-calendar"></i> 04/2022 – 02/2023</span>
+          <h3 class="experience__company">OBI</h3>
+          <p class="experience__role">Samstagskraft</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SKILLS ===== -->
+    <section id="skills" class="section">
+      <div class="section__header reveal">
+        <span class="section__label">SKILLS</span>
+        <h2 class="section__title">Technische Kenntnisse</h2>
+      </div>
+      <div class="skills__filters reveal">
+        <button class="skills__filter-btn active" data-filter="all">Alle</button>
+        <button class="skills__filter-btn" data-filter="hardware">Hardware</button>
+        <button class="skills__filter-btn" data-filter="embedded">Embedded</button>
+        <button class="skills__filter-btn" data-filter="software">Software</button>
+        <button class="skills__filter-btn" data-filter="other">Weitere</button>
+      </div>
+      <div class="skills__grid" id="skills-grid">
+        <!-- Hardware Skills -->
+        <div class="skill-card reveal" data-category="hardware"><span class="skill-card__tag">Hardware</span><div class="skill-card__icon"><i class="fa-solid fa-bolt"></i></div><h3 class="skill-card__name">Elektronikentwicklung</h3></div>
+        <div class="skill-card reveal" data-category="hardware"><span class="skill-card__tag">Hardware</span><div class="skill-card__icon"><i class="fa-solid fa-calculator"></i></div><h3 class="skill-card__name">Dimensionierung</h3></div>
+        <div class="skill-card reveal" data-category="hardware"><span class="skill-card__tag">Hardware</span><div class="skill-card__icon"><i class="fa-solid fa-diagram-project"></i></div><h3 class="skill-card__name">Schaltplanerstellung</h3></div>
+        <div class="skill-card reveal" data-category="hardware"><span class="skill-card__tag">Hardware</span><div class="skill-card__icon"><i class="fa-solid fa-layer-group"></i></div><h3 class="skill-card__name">PCB-Design</h3></div>
+        <div class="skill-card reveal" data-category="hardware"><span class="skill-card__tag">Hardware</span><div class="skill-card__icon"><i class="fa-solid fa-table-cells"></i></div><h3 class="skill-card__name">Leiterplattenlayout</h3></div>
+        <div class="skill-card reveal" data-category="hardware"><span class="skill-card__tag">Hardware</span><div class="skill-card__icon"><i class="fa-solid fa-chess-board"></i></div><h3 class="skill-card__name">Bauteilplatzierung</h3></div>
+        <div class="skill-card reveal" data-category="hardware"><span class="skill-card__tag">Hardware</span><div class="skill-card__icon"><i class="fa-solid fa-route"></i></div><h3 class="skill-card__name">Leiterbahnrouting</h3></div>
+        <div class="skill-card reveal" data-category="hardware"><span class="skill-card__tag">Hardware</span><div class="skill-card__icon"><i class="fa-solid fa-puzzle-piece"></i></div><h3 class="skill-card__name">Hardwareintegration</h3></div>
+        <div class="skill-card reveal" data-category="hardware"><span class="skill-card__tag">Hardware</span><div class="skill-card__icon"><i class="fa-solid fa-tower-broadcast"></i></div><h3 class="skill-card__name">Sensoranbindung</h3></div>
+        <div class="skill-card reveal" data-category="hardware"><span class="skill-card__tag">Hardware</span><div class="skill-card__icon"><i class="fa-solid fa-plug"></i></div><h3 class="skill-card__name">Spannungsversorgung</h3></div>
+        <!-- Embedded Skills -->
+        <div class="skill-card reveal" data-category="embedded"><span class="skill-card__tag">Embedded</span><div class="skill-card__icon"><i class="fa-solid fa-microchip"></i></div><h3 class="skill-card__name">Mikrocontroller</h3></div>
+        <div class="skill-card reveal" data-category="embedded"><span class="skill-card__tag">Embedded</span><div class="skill-card__icon"><i class="fa-solid fa-a"></i></div><h3 class="skill-card__name">Arduino</h3></div>
+        <div class="skill-card reveal" data-category="embedded"><span class="skill-card__tag">Embedded</span><div class="skill-card__icon"><i class="fa-solid fa-wifi"></i></div><h3 class="skill-card__name">ESP32</h3></div>
+        <div class="skill-card reveal" data-category="embedded"><span class="skill-card__tag">Embedded</span><div class="skill-card__icon"><i class="fa-solid fa-arrows-left-right"></i></div><h3 class="skill-card__name">I²C-Kommunikation</h3></div>
+        <div class="skill-card reveal" data-category="embedded"><span class="skill-card__tag">Embedded</span><div class="skill-card__icon"><i class="fa-solid fa-gauge-high"></i></div><h3 class="skill-card__name">Sensorintegration</h3></div>
+        <div class="skill-card reveal" data-category="embedded"><span class="skill-card__tag">Embedded</span><div class="skill-card__icon"><i class="fa-solid fa-database"></i></div><h3 class="skill-card__name">Datenerfassung</h3></div>
+        <div class="skill-card reveal" data-category="embedded"><span class="skill-card__tag">Embedded</span><div class="skill-card__icon"><i class="fa-solid fa-link"></i></div><h3 class="skill-card__name">HW-SW-Integration</h3></div>
+        <!-- Software Skills -->
+        <div class="skill-card reveal" data-category="software"><span class="skill-card__tag">Software</span><div class="skill-card__icon"><i class="fa-solid fa-terminal"></i></div><h3 class="skill-card__name">MCU-Programmierung</h3></div>
+        <div class="skill-card reveal" data-category="software"><span class="skill-card__tag">Software</span><div class="skill-card__icon"><i class="fa-solid fa-code"></i></div><h3 class="skill-card__name">Embedded Software</h3></div>
+        <div class="skill-card reveal" data-category="software"><span class="skill-card__tag">Software</span><div class="skill-card__icon"><i class="fa-solid fa-chart-line"></i></div><h3 class="skill-card__name">Datenverarbeitung</h3></div>
+        <div class="skill-card reveal" data-category="software"><span class="skill-card__tag">Software</span><div class="skill-card__icon"><i class="fa-solid fa-exchange-alt"></i></div><h3 class="skill-card__name">HW-SW-Kommunikation</h3></div>
+        <div class="skill-card reveal" data-category="software"><span class="skill-card__tag">Software</span><div class="skill-card__icon"><i class="fa-solid fa-server"></i></div><h3 class="skill-card__name">Webserver auf MCUs</h3></div>
+        <div class="skill-card reveal" data-category="software"><span class="skill-card__tag">Software</span><div class="skill-card__icon"><i class="fa-solid fa-display"></i></div><h3 class="skill-card__name">Browserbasierte UIs</h3></div>
+        <!-- Other Skills -->
+        <div class="skill-card reveal" data-category="other"><span class="skill-card__tag">Weitere</span><div class="skill-card__icon"><i class="fa-solid fa-file-lines"></i></div><h3 class="skill-card__name">Technische Dokumentation</h3></div>
+        <div class="skill-card reveal" data-category="other"><span class="skill-card__tag">Weitere</span><div class="skill-card__icon"><i class="fa-solid fa-list-check"></i></div><h3 class="skill-card__name">Projektmanagement</h3></div>
+        <div class="skill-card reveal" data-category="other"><span class="skill-card__tag">Weitere</span><div class="skill-card__icon"><i class="fa-solid fa-people-group"></i></div><h3 class="skill-card__name">Teamarbeit</h3></div>
+        <div class="skill-card reveal" data-category="other"><span class="skill-card__tag">Weitere</span><div class="skill-card__icon"><i class="fa-solid fa-brain"></i></div><h3 class="skill-card__name">Analytisches Denken</h3></div>
+        <div class="skill-card reveal" data-category="other"><span class="skill-card__tag">Weitere</span><div class="skill-card__icon"><i class="fa-solid fa-wrench"></i></div><h3 class="skill-card__name">Problemlösung</h3></div>
+      </div>
+      <!-- Languages & Traits -->
+      <div class="skills__extra reveal">
+        <div class="skills__languages">
+          <h3><i class="fa-solid fa-language"></i> Sprachen</h3>
+          <div class="badge-list">
+            <span class="badge">Deutsch <strong>C1</strong></span>
+            <span class="badge">Kroatisch <strong>C1</strong></span>
+            <span class="badge">Englisch <strong>B2</strong></span>
+          </div>
+        </div>
+        <div class="skills__traits">
+          <h3><i class="fa-solid fa-user-check"></i> Eigenschaften</h3>
+          <div class="badge-list">
+            <span class="badge">Teamfähig</span>
+            <span class="badge">Belastbar</span>
+            <span class="badge">Stressresistent</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJEKTE ===== -->
+    <section id="projekte" class="section">
+      <div class="section__header reveal">
+        <span class="section__label">PROJEKTE</span>
+        <h2 class="section__title">Meine Projekte</h2>
+      </div>
+      <div class="projects__grid">
+        <!-- Project 1: Gaia -->
+        <div class="project-card project-card--featured reveal">
+          <div class="project-card__badge"><i class="fa-solid fa-award"></i> Diplomarbeit 2025–2026</div>
+          <div class="project-card__image project-card__image--gaia">
+            <i class="fa-solid fa-wave-square"></i>
+            <span>Bodenschallerkennung</span>
+          </div>
+          <div class="project-card__content">
+            <span class="project-card__category">Elektronik • Embedded Systems • PCB-Design</span>
+            <h3 class="project-card__title">Gaia – Bodenschallerkennung</h3>
+            <p class="project-card__desc">Portables, energieautarkes System zur Erfassung, Speicherung und Visualisierung von Bodenschwingungen. Ein experimenteller Seismograph, entwickelt im Rahmen meiner HTL-Diplomarbeit.</p>
+            <div class="project-card__tags">
+              <span>Arduino Nano ESP32</span><span>MPU6050</span><span>KiCad</span>
+              <span>I²C</span><span>WebSockets</span><span>PCB-Design</span>
+            </div>
+            <div class="project-card__highlights">
+              <div class="highlight"><i class="fa-solid fa-microchip"></i><strong>Hardware</strong><small>Schaltungsentwicklung &amp; Systemarchitektur</small></div>
+              <div class="highlight"><i class="fa-solid fa-layer-group"></i><strong>PCB-Design</strong><small>Haupt- &amp; Sensorplatine</small></div>
+              <div class="highlight"><i class="fa-solid fa-code"></i><strong>Software</strong><small>Firmware &amp; Web-Visualisierung</small></div>
+            </div>
+            <div class="project-card__actions">
+              <a href="projects/gaia.html" class="btn btn--primary"><i class="fa-solid fa-arrow-right"></i> Details ansehen</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Auto -->
+        <div class="project-card reveal">
+          <div class="project-card__image project-card__image--auto">
+            <i class="fa-solid fa-car"></i>
+            <span>Autonomes Fahrzeug</span>
+          </div>
+          <div class="project-card__content">
+            <span class="project-card__category">Softwareentwicklung • Robotik • Embedded Systems</span>
+            <h3 class="project-card__title">Autonomes Spielzeugauto</h3>
+            <p class="project-card__desc">Ein autonom fahrendes 4WD-Fahrzeug mit IR-Sensorik und Wandverfolgungsalgorithmus. Arduino Uno-basiert mit selbst entwickelter Steuerungssoftware in C++.</p>
+            <div class="project-card__tags">
+              <span>Arduino Uno</span><span>C++</span><span>Sharp IR-Sensoren</span>
+              <span>H-Brücke</span><span>PlatformIO</span><span>FSM</span>
+            </div>
+            <div class="project-card__actions">
+              <a href="projects/auto.html" class="btn btn--primary"><i class="fa-solid fa-arrow-right"></i> Details ansehen</a>
+              <a href="https://github.com/Veni246/Auto" target="_blank" rel="noopener" class="btn btn--ghost"><i class="fa-brands fa-github"></i> GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KONTAKT ===== -->
+    <section id="kontakt" class="section">
+      <div class="section__header reveal">
+        <span class="section__label">KONTAKT</span>
+        <h2 class="section__title">Kontakt aufnehmen</h2>
+      </div>
+      <div class="contact__grid">
+        <div class="contact__info reveal">
+          <h3>Direkte Erreichbarkeit</h3>
+          <div class="contact__item">
+            <i class="fa-solid fa-envelope"></i>
+            <span>mariotadic246@gmail.com</span>
+            <button class="copy-btn" id="copy-email" data-copy="mariotadic246@gmail.com" aria-label="E-Mail kopieren"><i class="fa-regular fa-copy"></i> Kopieren</button>
+          </div>
+          <div class="contact__item">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Wien, Österreich</span>
+          </div>
+          <div class="contact__item">
+            <i class="fa-brands fa-github"></i>
+            <a href="https://github.com/Veni246" target="_blank" rel="noopener">github.com/Veni246</a>
+          </div>
+        </div>
+        <div class="contact__form-wrapper reveal">
+          <h3>Nachricht senden</h3>
+          <form id="contact-form">
+            <div class="form__group">
+              <label for="contact-name">Name</label>
+              <input type="text" id="contact-name" placeholder="Dein Name" required>
+            </div>
+            <div class="form__group">
+              <label for="contact-email">E-Mail</label>
+              <input type="email" id="contact-email" placeholder="Deine E-Mail-Adresse" required>
+            </div>
+            <div class="form__group">
+              <label for="contact-subject">Betreff</label>
+              <select id="contact-subject" required>
+                <option value="" disabled selected>Betreff auswählen</option>
+                <option value="Karriere / Bewerbung">Karriere / Bewerbung</option>
+                <option value="Technisches Projekt">Technisches Projekt</option>
+                <option value="Zusammenarbeit">Zusammenarbeit</option>
+                <option value="Frage zu Projekten">Frage zu Projekten</option>
+                <option value="Sonstiges">Sonstiges</option>
+              </select>
+            </div>
+            <div class="form__group">
+              <label for="contact-message">Nachricht</label>
+              <textarea id="contact-message" rows="5" placeholder="Deine Nachricht..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary btn--full"><i class="fa-solid fa-paper-plane"></i> E-Mail senden</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a href="#home" class="nav__logo">
+          <span class="nav__logo-bracket">&lt;</span><span class="nav__logo-name">MT</span><span class="nav__logo-slash">/</span><span class="nav__logo-bracket">&gt;</span>
+          <span class="nav__logo-text">ELECTRONICS</span>
+        </a>
+        <p>Elektronikentwicklung, PCB-Design, Embedded Systems und Softwareentwicklung. Student der Angewandten Elektronik und Technischen Informatik an der FH Campus Wien.</p>
+      </div>
+      <div class="footer__nav">
+        <h4>Navigation</h4>
+        <a href="#home">Home</a>
+        <a href="#ueber-mich">Über mich</a>
+        <a href="#ausbildung">Ausbildung</a>
+        <a href="#skills">Skills</a>
+        <a href="#projekte">Projekte</a>
+        <a href="#kontakt">Kontakt</a>
+      </div>
+      <div class="footer__contact">
+        <h4>Kontakt</h4>
+        <a href="mailto:mariotadic246@gmail.com"><i class="fa-solid fa-envelope"></i> mariotadic246@gmail.com</a>
+        <span><i class="fa-solid fa-location-dot"></i> Wien, Österreich</span>
+        <a href="https://github.com/Veni246" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> github.com/Veni246</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; 2026 Mario Tadic. Alle Rechte vorbehalten.</span>
+      <span class="footer__tech">HTML5 &bull; CSS3 &bull; Vanilla JS</span>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top -->
+  <button class="scroll-top" id="scroll-top" aria-label="Nach oben scrollen"><i class="fa-solid fa-chevron-up"></i></button>
+
+  <script src="script.js"></script>
+</body>
+</html>
